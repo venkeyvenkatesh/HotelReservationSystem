@@ -8,7 +8,7 @@ namespace HotelReservationSystem
 
     public enum CustomerType
     {
-        REGULAR
+        REGULAR,REWARD
     }
 
 
@@ -38,7 +38,12 @@ namespace HotelReservationSystem
 
                 }
 
+                else
+                {
+                    WeekDayRate = 80;
+                    WeekEndRate = 80;
 
+                }
             }
             else if (name.Equals("BRIDGEWOOD"))
             {
@@ -46,7 +51,13 @@ namespace HotelReservationSystem
                 if (type.Equals(CustomerType.REGULAR))
                 {
                     WeekDayRate = 160;
-                    WeekEndRate = 40;
+                    WeekEndRate = 60;
+
+                }
+                else
+                {
+                    WeekDayRate = 110;
+                    WeekEndRate = 50;
 
                 }
             }
@@ -59,6 +70,13 @@ namespace HotelReservationSystem
                     WeekEndRate = 150;
 
                 }
+                else
+                {
+                    WeekDayRate = 100;
+                    WeekEndRate = 40;
+
+                }
+
             }
 
 
@@ -109,17 +127,20 @@ namespace HotelReservationSystem
                 }
             }
             Hotels reqHotel = null;
-           // int length = 0;
+          
             foreach (var list in dictionary)
             {
-
-                if (list.Key.Rating > maxRating)
+                if (list.Value == min)
                 {
-                   // maxRating = list.Key.Rating;
-                    reqHotel = list.Key;
-                   // length++;
+                    if (list.Key.Rating > maxRating)
+                    {
+
+                        maxRating = list.Key.Rating;
+                        reqHotel = list.Key;
 
 
+
+                    }
                 }
 
             }
