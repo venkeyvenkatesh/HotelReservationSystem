@@ -69,7 +69,55 @@ namespace HotelReservationSystem
 
         }
 
-       
+        public int calculateRentBetweenDays(Hotels hotel)
+        {
+            TimeSpan days = endDate.Subtract(startDate);
+            DateTime date = startDate;
+            int totalFare = 0;
+            for (int i = 0; i <= days.Days; i++)
+            {
+                DayOfWeek day = date.DayOfWeek;
+
+                totalFare = totalFare + hotel.WeekDayRate;
+
+                date = date.AddDays(1);
+            }
+            return totalFare;
+        }
+
+
+
+        public void getTheMinimumFareHotel()
+        {
+            int min = 9999;
+            int maxRating = 0;
+            foreach (var hotel in list)
+            {
+                int newfare = calculateRentBetweenDays(hotel);
+                dictionary.Add(hotel, newfare);
+                if (newfare < min)
+                {
+                    min = newfare;
+                }
+            }
+            Hotels reqHotel = null;
+
+            foreach (var list in dictionary)
+            {
+                if (list.Value == min)
+                {
+                    if (list.Key.Rating > maxRating)
+                    {
+                        maxRating = list.Key.Rating;
+                        reqHotel = list.Key;
+
+                    }
+                }
+            }
+            Console.WriteLine("Min fare hotel is " + reqHotel.HotelName + "\n" + "Min fare is " + min);
+
+        }
+
 
     }
 

@@ -12,8 +12,9 @@ namespace HotelReservationSystem
             DateTime endDate = new DateTime(2020, 03, 18);
             HotelGenerator hotelName = new HotelGenerator(startDate, endDate);
             hotelName.AddHotel("LAKEWOOD", CustomerType.REGULAR);
-
-
+            hotelName.AddHotel("BRIDGEHOOD", CustomerType.REGULAR);
+            hotelName.AddHotel("RIDGEHOOD", CustomerType.REGULAR);
+            hotelName.getTheMinimumFareHotel();
 
         }
     }
