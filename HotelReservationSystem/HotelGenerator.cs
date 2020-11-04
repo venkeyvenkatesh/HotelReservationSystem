@@ -109,27 +109,26 @@ namespace HotelReservationSystem
                 }
             }
             Hotels reqHotel = null;
-            int length= 0;
+           // int length = 0;
             foreach (var list in dictionary)
             {
-                if (list.Value == min)
-                {
-                    if (list.Key.Rating > maxRating)
-                    {
-                        maxRating = list.Key.Rating;
-                        reqHotel = list.Key;
-                        length++;
-                        // reqHotel = list.Key;
 
-                    }
-                   
+                if (list.Key.Rating > maxRating)
+                {
+                   // maxRating = list.Key.Rating;
+                    reqHotel = list.Key;
+                   // length++;
+
+
                 }
+
             }
 
 
-          
-                Console.WriteLine("Min fare hotel is " + reqHotel.HotelName+"\n"+"Rating "+reqHotel.Rating + "\n" + "Min fare is " + min);
-            
+
+
+            Console.WriteLine("Min fare hotel is " + reqHotel.HotelName + "\n" + "Rating " + reqHotel.Rating + "\n" + " fare is " + dictionary[reqHotel]);
+
         }
 
 
