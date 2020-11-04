@@ -98,7 +98,7 @@ namespace HotelReservationSystem
         public void getTheMinimumFareHotel()
         {
             int min = 9999;
-            int maxRating = 0;
+           // int maxRating = 0;
             foreach (var hotel in list)
             {
                 int newfare = calculateRentBetweenDays(hotel);
@@ -118,6 +118,8 @@ namespace HotelReservationSystem
                     length++;
                 }
             }
+
+
             for (int i = 0; i < length; i++)
             {
                 Console.WriteLine("Min fare hotel is " + reqHotel[i].HotelName + "\n" + "Min fare is " + min);
