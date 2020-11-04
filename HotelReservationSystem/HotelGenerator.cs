@@ -6,32 +6,33 @@ using System.Text;
 namespace HotelReservationSystem
 {
 
-    public enum CustomerType
-    {
-        REGULAR,REWARD
-    }
+  
 
 
     public class HotelGenerator
     {
+        public static string customerType;
         public List<Hotels> list = new List<Hotels>();
         public Dictionary<Hotels, int> dictionary = new Dictionary<Hotels, int>();
 
         int WeekDayRate, WeekEndRate, Rating;
         DateTime startDate, endDate;
 
+        public string minFareHotel;
+       public  int minFare=9999;
+
         public HotelGenerator(DateTime startDate, DateTime endDate)
         {
             this.startDate = startDate;
             this.endDate = endDate;
         }
-        public void AddHotel(string name, CustomerType type)
+        public void AddHotel(string name)
         {
 
             if (name.Equals("LAKEWOOD"))
             {
                 Rating = 3;
-                if (type.Equals(CustomerType.REGULAR))
+                if (customerType.Equals("REGULAR"))
                 {
                     WeekDayRate = 110;
                     WeekEndRate = 90;
@@ -48,7 +49,7 @@ namespace HotelReservationSystem
             else if (name.Equals("BRIDGEWOOD"))
             {
                 Rating = 4;
-                if (type.Equals(CustomerType.REGULAR))
+                if (customerType.Equals("REGULAR"))
                 {
                     WeekDayRate = 160;
                     WeekEndRate = 60;
@@ -64,7 +65,7 @@ namespace HotelReservationSystem
             else if (name.Equals("RIDGEWOOD"))
             {
                 Rating = 5;
-                if (type.Equals(CustomerType.REGULAR))
+                if (customerType.Equals("REGULAR"))
                 {
                     WeekDayRate = 220;
                     WeekEndRate = 150;
@@ -89,6 +90,7 @@ namespace HotelReservationSystem
 
         public int calculateRentBetweenDays(Hotels hotel)
         {
+         
             TimeSpan days = endDate.Subtract(startDate);
             DateTime date = startDate;
             int totalFare = 0;
@@ -113,31 +115,32 @@ namespace HotelReservationSystem
 
 
 
-        public void getTheMinimumFareHotel()
+        public int getTheMinimumFareHotel()
         {
-            int min = 9999;
+           // int min = 9999;
             int maxRating = 0;
             foreach (var hotel in list)
             {
                 int newfare = calculateRentBetweenDays(hotel);
                 dictionary.Add(hotel, newfare);
-                if (newfare < min)
+                if (newfare < minFare)
                 {
-                    min = newfare;
+                    minFare = newfare;
+                 
                 }
             }
             Hotels reqHotel = null;
           
             foreach (var list in dictionary)
             {
-                if (list.Value == min)
+                if (list.Value == minFare)
                 {
                     if (list.Key.Rating > maxRating)
                     {
 
                         maxRating = list.Key.Rating;
                         reqHotel = list.Key;
-
+                        minFareHotel = reqHotel.HotelName;
 
 
                     }
@@ -149,7 +152,7 @@ namespace HotelReservationSystem
 
 
             Console.WriteLine("Min fare hotel is " + reqHotel.HotelName + "\n" + "Rating " + reqHotel.Rating + "\n" + " fare is " + dictionary[reqHotel]);
-
+            return minFare;
         }
 
 
