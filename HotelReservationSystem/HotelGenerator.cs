@@ -46,7 +46,7 @@ namespace HotelReservationSystem
                 if (type.Equals(CustomerType.REGULAR))
                 {
                     WeekDayRate = 160;
-                    WeekEndRate = 60;
+                    WeekEndRate = 40;
 
                 }
             }
@@ -77,8 +77,16 @@ namespace HotelReservationSystem
             for (int i = 0; i <= days.Days; i++)
             {
                 DayOfWeek day = date.DayOfWeek;
+                if ((day.Equals(DayOfWeek.Saturday)) || (day.Equals(DayOfWeek.Sunday)))
+                {
+                    totalFare = totalFare + hotel.WeekEndRate;
+                }
+                else
+                {
+                   
 
-                totalFare = totalFare + hotel.WeekDayRate;
+                    totalFare = totalFare + hotel.WeekDayRate;
+                }
 
                 date = date.AddDays(1);
             }
@@ -100,22 +108,20 @@ namespace HotelReservationSystem
                     min = newfare;
                 }
             }
-            Hotels reqHotel = null;
-
+            Hotels[] reqHotel = new Hotels[3];
+            int length= 0;
             foreach (var list in dictionary)
             {
                 if (list.Value == min)
                 {
-                    if (list.Key.Rating > maxRating)
-                    {
-                        maxRating = list.Key.Rating;
-                        reqHotel = list.Key;
-
-                    }
+                    reqHotel[length] = list.Key;
+                    length++;
                 }
             }
-            Console.WriteLine("Min fare hotel is " + reqHotel.HotelName + "\n" + "Min fare is " + min);
-
+            for (int i = 0; i < length; i++)
+            {
+                Console.WriteLine("Min fare hotel is " + reqHotel[i].HotelName + "\n" + "Min fare is " + min);
+            }
         }
 
 
