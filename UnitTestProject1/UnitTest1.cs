@@ -7,6 +7,10 @@ namespace UnitTestProject1
     [TestClass]
     public class UnitTest1
     {
+
+        /// <summary>
+        /// Returns the minimum fare for regular customers week days.
+        /// </summary>
         [TestMethod]
         public void ReturnMinFareForRegularCustomersWeekDays()
         {
@@ -25,6 +29,9 @@ namespace UnitTestProject1
         }
 
 
+        /// <summary>
+        /// Returns the minimum fare for reward customers week days.
+        /// </summary>
         [TestMethod]
         public void ReturnMinFareForRewardCustomersWeekDays()
         {
@@ -44,7 +51,9 @@ namespace UnitTestProject1
 
 
 
-
+        /// <summary>
+        /// Returns the minimum fare for regular customers including week end.
+        /// </summary>
         [TestMethod]
         public void ReturnMinFareForRegularCustomersWeekEnd()
         {
@@ -62,6 +71,9 @@ namespace UnitTestProject1
             Assert.AreEqual(expectedHotel, hotelName.minFareHotel);
         }
 
+        /// <summary>
+        /// Returns the minimum fare for reward customers including week end.
+        /// </summary>
         [TestMethod]
         public void ReturnMinFareForRewardCustomersWeekEnd()
         {
@@ -81,6 +93,61 @@ namespace UnitTestProject1
         }
 
 
+        /// <summary>
+        /// Given the invalid dates throws exception.
+        /// </summary>
+        [TestMethod]
 
+        public void GivenInvalidDates_throwsException()
+        {
+            HotelException.ExceptionType expected = HotelException.ExceptionType.INVALID_DATE;
+
+
+            try
+            {
+                DateTime startDate = new DateTime(2020, 09, 13);
+                DateTime endDate = new DateTime(2020, 09, 12);
+                HotelGenerator hotelName = new HotelGenerator(startDate, endDate);
+            }
+            catch (HotelException he)
+            {
+                HotelException.ExceptionType actual;
+                actual = he.type;
+                Assert.AreEqual(expected, actual);
+            }
+
+
+        }
+
+
+        /// <summary>
+        /// Given the invalid customer type throws exception.
+        /// </summary>
+        [TestMethod]
+        public void GivenInvalidCustomerType_throwsException()
+        {
+            HotelException.ExceptionType expected = HotelException.ExceptionType.INVALID_CUSTOMER_TYPE;
+
+
+            try
+            {
+                DateTime startDate = new DateTime(2020, 09, 11);
+                DateTime endDate = new DateTime(2020, 09, 12);
+                HotelGenerator hotelName = new HotelGenerator(startDate, endDate);
+                HotelGenerator.customerType = "RARD";
+
+                hotelName.AddHotel("LAKEWOOD");
+                hotelName.AddHotel("BRIDGEWOOD");
+                hotelName.AddHotel("RIDGEWOOD");
+
+
+            }
+            catch (HotelException he)
+            {
+                HotelException.ExceptionType actual;
+                actual = he.type;
+                Assert.AreEqual(expected, actual);
+            }
+        }
     }
 }

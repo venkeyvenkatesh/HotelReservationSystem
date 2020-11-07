@@ -6,28 +6,47 @@ using System.Text;
 namespace HotelReservationSystem
 {
 
-  
 
 
     public class HotelGenerator
     {
         public static string customerType;
-        public List<Hotels> list = new List<Hotels>();
-        public Dictionary<Hotels, int> dictionary = new Dictionary<Hotels, int>();
 
-        int WeekDayRate, WeekEndRate, Rating;
+        public List<Hotels> hotelList = new List<Hotels>();
+        public Dictionary<Hotels, int> hotelFareDictionary = new Dictionary<Hotels, int>();
+
+        int WeekDayRate, WeekEndRate, Rating,minFare=9999;
+
+
         DateTime startDate, endDate;
 
-        public string minFareHotel;
-       public  int minFare=9999;
 
+        public string minFareHotel;
+      
+
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HotelGenerator"/> class.
+        /// </summary>
+        /// <param name="startDate">The start date.</param>
+        /// <param name="endDate">The end date.</param>
         public HotelGenerator(DateTime startDate, DateTime endDate)
         {
             this.startDate = startDate;
             this.endDate = endDate;
         }
+
+
+        /// <summary>
+        /// Adds the hotel.
+        /// </summary>
+        /// <param name="name">The name.</param>
         public void AddHotel(string name)
         {
+            if(!(customerType.Equals("REWARD")||customerType.Equals("REGULAR")))
+            {
+                throw new HotelException(HotelException.ExceptionType.INVALID_CUSTOMER_TYPE, "Invalid Customer passed");
+            }
 
             if (name.Equals("LAKEWOOD"))
             {
@@ -39,12 +58,13 @@ namespace HotelReservationSystem
 
                 }
 
-                else
+                else 
                 {
                     WeekDayRate = 80;
                     WeekEndRate = 80;
 
                 }
+                
             }
             else if (name.Equals("BRIDGEWOOD"))
             {
@@ -79,18 +99,33 @@ namespace HotelReservationSystem
                 }
 
             }
+            else
+            {
+                throw new HotelException(HotelException.ExceptionType.INVALID_HOTEL_TYPE, "Invald hotel type passed");
+            }
 
 
 
 
             Hotels hotels = new Hotels(name, WeekDayRate, WeekEndRate, Rating);
-            list.Add(hotels);
+            hotelList.Add(hotels);
 
         }
 
+
+        /// <summary>
+        /// Calculates the rent between days.
+        /// </summary>
+        /// <param name="hotel">The hotel.</param>
+        /// <returns></returns>
         public int calculateRentBetweenDays(Hotels hotel)
         {
-         
+         if(startDate>endDate)
+            {
+                throw new HotelException(HotelException.ExceptionType.INVALID_DATE, "INAVLID_DATES_PASSED");
+
+            }
+
             TimeSpan days = endDate.Subtract(startDate);
             DateTime date = startDate;
             int totalFare = 0;
@@ -114,15 +149,18 @@ namespace HotelReservationSystem
         }
 
 
-
-        public int getTheMinimumFareHotel()
+        /// <summary>
+        /// Gets the minimum fare hotel.
+        /// </summary>
+        /// <returns></returns>
+       public int getTheMinimumFareHotel()
         {
            // int min = 9999;
             int maxRating = 0;
-            foreach (var hotel in list)
+            foreach (var hotel in hotelList)
             {
                 int newfare = calculateRentBetweenDays(hotel);
-                dictionary.Add(hotel, newfare);
+                hotelFareDictionary.Add(hotel, newfare);
                 if (newfare < minFare)
                 {
                     minFare = newfare;
@@ -131,7 +169,7 @@ namespace HotelReservationSystem
             }
             Hotels reqHotel = null;
           
-            foreach (var list in dictionary)
+            foreach (var list in hotelFareDictionary)
             {
                 if (list.Value == minFare)
                 {
@@ -148,10 +186,7 @@ namespace HotelReservationSystem
 
             }
 
-
-
-
-            Console.WriteLine("Min fare hotel is " + reqHotel.HotelName + "\n" + "Rating " + reqHotel.Rating + "\n" + " fare is " + dictionary[reqHotel]);
+            Console.WriteLine("Min fare hotel is " + reqHotel.HotelName + "\n" + "Rating " + reqHotel.Rating + "\n" + "min fare is " + hotelFareDictionary[reqHotel]);
             return minFare;
         }
 
